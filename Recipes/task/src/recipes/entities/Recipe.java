@@ -3,14 +3,14 @@ package recipes.entities;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.*;
-import org.hibernate.Hibernate;
-
 import javax.persistence.*;
+import javax.persistence.criteria.CriteriaBuilder;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Objects;
+
 
 @Getter
 @Setter
@@ -19,12 +19,13 @@ import java.util.Objects;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "recipes")
 public class Recipe {
 
     @JsonIgnore
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
+    private Long id;
 
     @JsonProperty
     @NotBlank
@@ -32,8 +33,15 @@ public class Recipe {
 
     @JsonProperty
     @NotBlank
+    private String category;
+
+    @JsonProperty
+    @NotBlank
     private String description;
 
+    @JsonProperty
+    @NonNull
+    private LocalDateTime date;
 
     @NotNull
     @Size(min = 1)
@@ -46,9 +54,11 @@ public class Recipe {
     @ElementCollection
     private List<String> directions;
 
-    public Recipe(String name, String description, @NonNull List<String> ingredients, @NonNull List<String> directions) {
+    public Recipe(String name, String category, String description, List<String> ingredients, @NonNull List<String> directions) {
         this.name = name;
+        this.category = category;
         this.description = description;
+        this.date = LocalDateTime.now();
         this.ingredients = ingredients;
         this.directions = directions;
     }
