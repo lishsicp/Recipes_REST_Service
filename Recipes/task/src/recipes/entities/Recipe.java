@@ -54,6 +54,9 @@ public class Recipe {
     @ElementCollection
     private List<String> directions;
 
+    @JsonIgnore
+    private String email;
+
     public Recipe(String name, String category, String description, List<String> ingredients, @NonNull List<String> directions) {
         this.name = name;
         this.category = category;
